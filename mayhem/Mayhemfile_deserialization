@@ -1,0 +1,8 @@
+project: savantenvs/snarkos
+target: deserialization
+
+cmds:
+  - cmd: /mayhem/deserialization
+    libfuzzer: true
+  - cmd: /mayhem/deserialization_no_inst @@
+    libfuzzer: false

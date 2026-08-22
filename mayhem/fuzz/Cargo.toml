@@ -1,0 +1,32 @@
+[package]
+name = "snarkos-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+bytes = "1"
+bincode = "1"
+tokio-util = { version = "0.7", features = ["codec"] }
+
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "network"
+path = "fuzz_targets/network.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "deserialization"
+path = "fuzz_targets/deserialization.rs"
+test = false
+doc = false
+
+[profile.release]
+debug = true

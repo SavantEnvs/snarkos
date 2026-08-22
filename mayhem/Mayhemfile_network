@@ -1,0 +1,8 @@
+project: savantenvs/snarkos
+target: network
+
+cmds:
+  - cmd: /mayhem/network
+    libfuzzer: true
+  - cmd: /mayhem/network_no_inst @@
+    libfuzzer: false
