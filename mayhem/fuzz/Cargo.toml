@@ -1,0 +1,57 @@
+[package]
+name = "snarkos-fuzz"
+version = "0.0.0"
+authors = ["Automatically generated"]
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+bytes = "1"
+libfuzzer-sys = "0.4"
+tokio-util = { version = "0.7", features = [ "codec" ] }
+
+[dependencies.snarkos-environment]
+path = "../../environment"
+features = [ "network" ]
+
+# fuzz/ is its own [workspace] (below), so it resolves deps independently of the root Cargo.lock —
+# pulling today's latest aleo-std-* instead of the versions the root Cargo.lock pinned at UPSTREAM.
+# Those have since renamed/regated several re-exports snarkvm-utilities 0.8.0 depends on existing
+# unconditionally (aleo_std::{Cpu,get_cpu} gated behind a new "cpu" feature; aleo-std-storage renamed
+# aleo_operator_dir/aleo_prover_dir). Pin every aleo-std-* crate to the root lock's exact version.
+[dependencies.aleo-std]
+version = "=0.1.14"
+
+[dependencies.aleo-std-storage]
+version = "=0.1.3"
+
+[dependencies.aleo-std-cpu]
+version = "=0.1.3"
+
+[dependencies.aleo-std-profiler]
+version = "=0.1.13"
+
+[dependencies.aleo-std-time]
+version = "=0.1.0"
+
+[dependencies.aleo-std-timed]
+version = "=0.1.2"
+
+[dependencies.aleo-std-timer]
+version = "=0.1.1"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "deserialization"
+path = "fuzz_targets/deserialization.rs"
+test = false
+doc = false
+
+[profile.release]
+debug = true
